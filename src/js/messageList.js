@@ -1,41 +1,40 @@
 var config = Array();
 var ignorated = {
-	total_ignored : 0,
-	data : {
-		users : {}
+	total_ignored: 0,
+	data: {
+		users: {}
 	}
 };
 var messageList = {
-	click_expand_thumbnail : function() {
+	click_expand_thumbnail: function() {
 		for (var j = 0; document.getElementsByClassName('imgs')[j]; j++) {
 			for (var k = 0; document.getElementsByClassName('imgs')[j]
-					.getElementsByTagName('a')[k]; k++) {
+				.getElementsByTagName('a')[k]; k++) {
 				if (document.getElementsByClassName('imgs')[j]
-						.getElementsByTagName('a')[k].className === ''
-						&& parseInt(document.getElementsByClassName('imgs')[j]
-								.getElementsByTagName('a')[k]
-								.getElementsByTagName('span')[0].style.width) <= 150) {
+					.getElementsByTagName('a')[k].className === '' && parseInt(document.getElementsByClassName('imgs')[j]
+						.getElementsByTagName('a')[k]
+						.getElementsByTagName('span')[0].style.width) <= 150) {
 					document.getElementsByClassName('imgs')[j]
-							.addEventListener("click",
-									messageListHelper.expandThumbnail);
+						.addEventListener("click",
+							messageListHelper.expandThumbnail);
 					document.getElementsByClassName('imgs')[j]
-							.getElementsByTagName('a')[k].className = 'thumbnailed_image';
+						.getElementsByTagName('a')[k].className = 'thumbnailed_image';
 					document.getElementsByClassName('imgs')[j]
-							.getElementsByTagName('a')[k].setAttribute(
+						.getElementsByTagName('a')[k].setAttribute(
 							'oldHref',
 							document.getElementsByClassName('imgs')[j]
-									.getElementsByTagName('a')[k].href);
+							.getElementsByTagName('a')[k].href);
 					document.getElementsByClassName('imgs')[j]
-							.getElementsByTagName('a')[k]
-							.removeAttribute('href');
+						.getElementsByTagName('a')[k]
+						.removeAttribute('href');
 				}
 			}
 		}
 	},
-	drag_resize_image : function() {
+	drag_resize_image: function() {
 		// console.log(document.getElementsByClassName('img'));
 	},
-	user_notes : function() {
+	user_notes: function() {
 		if (!config.usernote_notes)
 			config.usernote_notes = {};
 		document.addEventListener('click', function(tgt) {
@@ -44,9 +43,9 @@ var messageList = {
 			}
 		});
 		messageListHelper.addNotebox(document
-				.getElementsByClassName('message-top'));
+			.getElementsByClassName('message-top'));
 	},
-	ignorator_messagelist : function() {
+	ignorator_messagelist: function() {
 		if (!config.ignorator)
 			return;
 		var s;
@@ -58,8 +57,8 @@ var messageList = {
 				d++;
 			}
 			messageListHelper.ignores[r] = messageListHelper.ignores[r]
-					.substring(d, messageListHelper.ignores[r].length)
-					.toLowerCase();
+				.substring(d, messageListHelper.ignores[r].length)
+				.toLowerCase();
 		}
 		for (var j = 0; document.getElementsByClassName('message-top')[j]; j++) {
 			s = document.getElementsByClassName('message-top').item(j);
@@ -67,30 +66,30 @@ var messageList = {
 				if (s.getElementsByTagName('a').item(0).innerHTML.toLowerCase() == messageListHelper.ignores[f]) {
 					s.parentNode.style.display = 'none';
 					if (config.debug)
-						console.log('removed post by '
-								+ messageListHelper.ignores[f]);
+						console.log('removed post by ' + messageListHelper.ignores[f]);
 					ignorated.total_ignored++;
 					if (!ignorated.data.users[messageListHelper.ignores[f]]) {
 						ignorated.data.users[messageListHelper.ignores[f]] = {};
 						ignorated.data.users[messageListHelper.ignores[f]].total = 1;
-						ignorated.data.users[messageListHelper.ignores[f]].trs = [ j ];
+						ignorated.data.users[messageListHelper.ignores[f]].trs = [j];
 					} else {
 						ignorated.data.users[messageListHelper.ignores[f]].total++;
 						ignorated.data.users[messageListHelper.ignores[f]].trs
-								.push(j);
+							.push(j);
 					}
 				}
 			}
 		}
 		messageListHelper.globalPort.postMessage({
-			action : 'ignorator_update',
-			ignorator : ignorated,
-			scope : "messageList"
+			action: 'ignorator_update',
+			ignorator: ignorated,
+			scope: "messageList"
 		});
 	},
-	imagemap_on_infobar : function() {
+	imagemap_on_infobar: function() {
 		function getUrlVars(urlz) {
-			var vars = [], hash;
+			var vars = [],
+				hash;
 			var hashes = urlz.slice(urlz.indexOf('?') + 1).split('&');
 			for (var i = 0; i < hashes.length; i++) {
 				hash = hashes[i].split('=');
@@ -107,25 +106,19 @@ var messageList = {
 		var get = getUrlVars(window.location.href);
 		var page = location.pathname;
 
-		if (page == "/imagemap.php" && get["topic"] != undefined) {
+		if (page == "/imagemap.php" && get ["topic"] != undefined) {
 			var as2 = divs.getElementsByTagName("a");
 			for (var j = 0; j < as2.length; j++) {
 				if (as2[j].href.indexOf("imagemap.php?") > 0) {
-					as2[j].href = as2[j].href + "&board=" + get["board"];
+					as2[j].href = as2[j].href + "&board=" + get ["board"];
 				}
 			}
-			divs.innerHTML = divs.innerHTML
-					+ " | <a href='/showmessages.php?board=" + get["board"]
-					+ "&topic=" + get["topic"]
-					+ "' title='Back to Topic'>Back to Topic</a>";
+			divs.innerHTML = divs.innerHTML + " | <a href='/showmessages.php?board=" + get ["board"] + "&topic=" + get ["topic"] + "' title='Back to Topic'>Back to Topic</a>";
 		} else if (page == "/showmessages.php") {
-			divs.innerHTML = divs.innerHTML
-					+ " | <a href='/imagemap.php?board=" + get["board"]
-					+ "&topic=" + get["topic"]
-					+ "' title='Imagemap'>Imagemap</a>";
+			divs.innerHTML = divs.innerHTML + " | <a href='/imagemap.php?board=" + get ["board"] + "&topic=" + get ["topic"] + "' title='Imagemap'>Imagemap</a>";
 		}
 	},
-	batch_uploader : function() {
+	batch_uploader: function() {
 		var ulBox = document.createElement('input');
 		ulBox.type = 'file';
 		ulBox.multiple = true;
@@ -136,28 +129,28 @@ var messageList = {
 		ulButton.value = "Batch Upload";
 		ulButton.addEventListener('click', messageListHelper.startBatchUpload);
 		document.getElementsByClassName('quickpost-body')[0].insertBefore(
-				ulBox, null);
+			ulBox, null);
 		document.getElementsByClassName('quickpost-body')[0].insertBefore(
-				ulButton, ulBox);
+			ulButton, ulBox);
 	},
-	post_title_notification : function() {
+	post_title_notification: function() {
 		document.addEventListener('scroll', messageListHelper.clearUnreadPosts);
 		document.addEventListener('mousemove',
-				messageListHelper.clearUnreadPosts);
+			messageListHelper.clearUnreadPosts);
 	},
-	quickpost_on_pgbottom : function() {
+	quickpost_on_pgbottom: function() {
 		chrome.extension.sendRequest({
-			need : "insertcss",
-			file : "src/css/quickpost_on_pgbottom.css"
+			need: "insertcss",
+			file: "src/css/quickpost_on_pgbottom.css"
 		});
 	},
-	resize_imgs : function() {
+	resize_imgs: function() {
 		for (var i = 0; document.getElementsByTagName('img')[i]; i++) {
 			messageListHelper
-					.resizeImg(document.getElementsByTagName('img')[i]);
+				.resizeImg(document.getElementsByTagName('img')[i]);
 		}
 	},
-	loadquotes : function() {
+	loadquotes: function() {
 		function getElementsByClass(searchClass, node, tag) {
 			var classElements = new Array();
 			if (node == null)
@@ -197,23 +190,22 @@ var messageList = {
 			var scripttags = newmessage.getElementsByTagName('script');
 			for (var i = 0; i < scripttags.length; i++) {
 				var jsSource = scripttags[i].innerHTML
-						.replace(
-								/onDOMContentLoaded\(function\(\)\{new ImageLoader\(\$\("u0_1"\), "\\\/\\\//gi,
-								'').replace(/\\/gi, '').replace(/\)\}\)/gi, '')
-						.split(',');
+					.replace(
+						/onDOMContentLoaded\(function\(\)\{new ImageLoader\(\$\("u0_1"\), "\\\/\\\//gi,
+						'').replace(/\\/gi, '').replace(/\)\}\)/gi, '')
+					.split(',');
 				var replacement = new Image();
 				replacement.src = url + '://' + jsSource[0].replace(/"$/gi, '');
 				replacement.className = 'expandimagesLOL';
 				scripttags[i].parentNode.replaceChild(replacement,
-						scripttags[i]);
+					scripttags[i]);
 				i--;
 			}
 			if (newmessage.innerHTML.indexOf('---') != -1) {
 				var j = 0;
 				while (newmessage.childNodes[j]) {
-					if (newmessage.childNodes[j].nodeType == 3
-							&& newmessage.childNodes[j].nodeValue
-									.indexOf('---') != -1) {
+					if (newmessage.childNodes[j].nodeType == 3 && newmessage.childNodes[j].nodeValue
+						.indexOf('---') != -1) {
 						while (newmessage.childNodes[j]) {
 							newmessage.removeChild(newmessage.childNodes[j]);
 						}
@@ -229,24 +221,11 @@ var messageList = {
 			var newSpan = document.createElement('span');
 			newSpan.innerHTML = 'Loading message...';
 			var loadingImg = new Image();
-			loadingImg.src = 'data:image/gif;base64,'
-					+ 'R0lGODlhEAAQAPIAAP///2Zm/9ra/o2N/mZm/6Cg/rOz/r29/iH/C05FVFNDQVBFMi4wAwEAAAAh/hpD'
-					+ 'cmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZ'
-					+ 'nAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi6'
-					+ '3P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAs'
-					+ 'AAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKp'
-					+ 'ZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8D'
-					+ 'YlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJU'
-					+ 'lIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe8'
-					+ '2p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAAD'
-					+ 'Mgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAA'
-					+ 'LAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsR'
-					+ 'kAAAOwAAAAAAAAAAAA==';
+			loadingImg.src = 'data:image/gif;base64,' + 'R0lGODlhEAAQAPIAAP///2Zm/9ra/o2N/mZm/6Cg/rOz/r29/iH/C05FVFNDQVBFMi4wAwEAAAAh/hpD' + 'cmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZ' + 'nAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi6' + '3P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAs' + 'AAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKp' + 'ZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8D' + 'YlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJU' + 'lIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe8' + '2p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAAD' + 'Mgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAA' + 'LAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsR' + 'kAAAOwAAAAAAAAAAAA==';
 			this.parentNode.insertBefore(newSpan, this);
 			this.parentNode.replaceChild(loadingImg, this);
 			var ajax = new XMLHttpRequest();
-			ajax.open('GET', url + '://boards.endoftheinter.net/message.php?'
-					+ mssgurl, true);
+			ajax.open('GET', url + '://boards.endoftheinter.net/message.php?' + mssgurl, true);
 			ajax.send(null);
 			ajax.onreadystatechange = function() {
 				if (ajax.readyState == 4) {
@@ -269,15 +248,14 @@ var messageList = {
 					if (anchors[j].innerHTML == '[quoted text omitted]') {
 						anchors[j].removeAttribute('href');
 						var parts = anchors[j].parentNode.getAttribute('msgid')
-								.split(',');
+							.split(',');
 						var secondsplit = parts[2].split('@');
-						anchors[j].id = 'id=' + secondsplit[0] + '&topic='
-								+ parts[1] + '&r=' + secondsplit[1];
+						anchors[j].id = 'id=' + secondsplit[0] + '&topic=' + parts[1] + '&r=' + secondsplit[1];
 						anchors[j].addEventListener('click', loadMessage, true);
 						anchors[j].style.textDecoration = 'underline';
 						anchors[j].title = 'Click to load the omitted message';
 						anchors[j].addEventListener('mouseover', coolCursor,
-								true);
+							true);
 					}
 				}
 			}
@@ -287,7 +265,7 @@ var messageList = {
 
 		function checkMssgs() {
 			var mssgs = getElementsByClass('message-container', document
-					.getElementById('u0_1'), 'div').length;
+				.getElementById('u0_1'), 'div').length;
 			if (mssgs > currentMessages) {
 				findQuotes();
 				currentMessages = mssgs;
@@ -295,7 +273,7 @@ var messageList = {
 		}
 		var interval = window.setInterval(checkMssgs, 1000);
 	},
-	quickpost_tag_buttons : function() {
+	quickpost_tag_buttons: function() {
 		var m = document.getElementsByClassName('quickpost-body')[0];
 		var txt = document.getElementById('u0_13');
 		var insM = document.createElement('input');
@@ -355,11 +333,10 @@ var messageList = {
 		m.insertBefore(insB, insI);
 		m.insertBefore(document.createElement('br'), insB);
 	},
-	filter_me : function() {
-		var me = '&u='
-				+ document.getElementsByClassName('userbar')[0]
-						.getElementsByTagName('a')[0].href
-						.match(/\?user=([0-9]+)/)[1];
+	filter_me: function() {
+		var me = '&u=' + document.getElementsByClassName('userbar')[0]
+			.getElementsByTagName('a')[0].href
+			.match(/\?user=([0-9]+)/)[1];
 		var txt = 'Filter Me';
 		var topic = window.location.href.match(/topic=([0-9]+)/)[1];
 		var fmh;
@@ -369,47 +346,44 @@ var messageList = {
 			fmh = window.location.href.replace(me, '');
 			txt = 'Unfilter Me';
 		}
-		document.getElementsByClassName('infobar')[0].innerHTML += ' | <a href="'
-				+ fmh + '">' + txt + '</a>';
+		document.getElementsByClassName('infobar')[0].innerHTML += ' | <a href="' + fmh + '">' + txt + '</a>';
 	},
-	expand_spoilers : function() {
+	expand_spoilers: function() {
 		var ains = document.createElement('span');
 		ains.id = 'chromell_spoilers';
 		document.addEventListener('click', messageListHelper.toggleSpoilers,
-				false);
+			false);
 		ains.innerHTML = ' | <a href="##" id="chromell_spoiler">Expand Spoilers</a>';
 		var la = document.getElementsByClassName('infobar')[0]
-				.getElementsByClassName('a');
+			.getElementsByClassName('a');
 		document.getElementsByClassName('infobar')[0].insertBefore(ains,
-				la[la.size]);
+			la[la.size]);
 	},
-	drop_batch_uploader : function() {
+	drop_batch_uploader: function() {
 		var quickreply = document.getElementsByTagName('textarea')[0];
 		quickreply
-				.addEventListener(
-						'drop',
-						function(evt) {
-							evt.preventDefault();
-							if (evt.dataTransfer.files.length == 0) {
-								console.log(evt);
-								return;
-							}
-							document.getElementsByClassName('quickpost-body')[0]
-									.getElementsByTagName('b')[0].innerHTML += " (Uploading: 1/"
-									+ evt.dataTransfer.files.length + ")";
-							commonFunctions.asyncUpload(evt.dataTransfer.files);
-						});
+			.addEventListener(
+				'drop',
+				function(evt) {
+					evt.preventDefault();
+					if (evt.dataTransfer.files.length == 0) {
+						console.log(evt);
+						return;
+					}
+					document.getElementsByClassName('quickpost-body')[0]
+						.getElementsByTagName('b')[0].innerHTML += " (Uploading: 1/" + evt.dataTransfer.files.length + ")";
+					commonFunctions.asyncUpload(evt.dataTransfer.files);
+				});
 	},
-	highlight_tc : function() {
+	highlight_tc: function() {
 		var tcs = messageListHelper.getTcMessages();
 		if (!tcs)
 			return;
 		for (var i = 0; i < tcs.length; i++) {
-			tcs[i].getElementsByTagName('a')[0].style.color = '#'
-					+ config.tc_highlight_color;
+			tcs[i].getElementsByTagName('a')[0].style.color = '#' + config.tc_highlight_color;
 		}
 	},
-	label_tc : function() {
+	label_tc: function() {
 		var tcs = messageListHelper.getTcMessages();
 		if (!tcs)
 			return;
@@ -418,16 +392,15 @@ var messageList = {
 			ipx = document.createElement('span');
 			inner = ' | <b>TC</b>';
 			if (config.tc_label_color && config.tc_label_color != '')
-				inner = ' | <font color="#' + config.tc_label_color
-						+ '"><b>TC</b></font>';
+				inner = ' | <font color="#' + config.tc_label_color + '"><b>TC</b></font>';
 			ipx.innerHTML = inner;
 			tcs[i].insertBefore(ipx,
-					tcs[i].getElementsByTagName('a')[0].nextSibling);
+				tcs[i].getElementsByTagName('a')[0].nextSibling);
 		}
 	},
-	post_before_preview : function() {
+	post_before_preview: function() {
 		var m = document.getElementsByClassName('quickpost-body')[0]
-				.getElementsByTagName('input');
+			.getElementsByTagName('input');
 		var preview;
 		var post;
 		for (var i = 0; m[i]; i++) {
@@ -441,7 +414,7 @@ var messageList = {
 		post.parentNode.removeChild(post);
 		preview.parentNode.insertBefore(post, preview);
 	},
-	like_button : function() {
+	like_button: function() {
 		if (window.location.href.match('archives'))
 			return;
 		var headID = document.getElementsByTagName("head")[0];
@@ -451,37 +424,34 @@ var messageList = {
 		headID.appendChild(newScript);
 		for (var i = 0; document.getElementsByClassName('message-top').item(i); i++) {
 			if (document.getElementsByClassName('message-top').item(i)
-					.getElementsByTagName('a')[2]) {
-				document.getElementsByClassName('message-top').item(i).innerHTML += ' | <a href="##like'
-						+ i + '" onclick="like(this);">Like</a>';
+				.getElementsByTagName('a')[2]) {
+				document.getElementsByClassName('message-top').item(i).innerHTML += ' | <a href="##like' + i + '" onclick="like(this);">Like</a>';
 			}
 		}
 	},
-	hide_deleted : function() {
+	hide_deleted: function() {
 		var msgs = document.getElementsByClassName('message-container');
 		for (var i = 0; msgs[i]; i++) {
 			if (msgs[i].getElementsByClassName('message-top')[0]
-					.getElementsByTagName('em')[0]
-					&& msgs[i].getElementsByClassName('message-top')[0]
-							.getElementsByTagName('em')[0].innerHTML !== 'Moderator') {
+				.getElementsByTagName('em')[0] && msgs[i].getElementsByClassName('message-top')[0]
+				.getElementsByTagName('em')[0].innerHTML !== 'Moderator') {
 				msgs[i].getElementsByClassName('message-body')[0].style.display = 'none';
 				var a = document.createElement('a');
 				a.href = '##' + i;
 				a.innerHTML = 'Show Message';
 				a.addEventListener('click', function(evt) {
 					var msg = evt.target.parentNode.parentNode
-							.getElementsByClassName('message-body')[0];
+						.getElementsByClassName('message-body')[0];
 					console.log(evt.target);
-					msg.style.display === 'none' ? msg.style.display = 'block'
-							: msg.style.display = 'none';
+					msg.style.display === 'none' ? msg.style.display = 'block' : msg.style.display = 'none';
 				});
 				msgs[i].getElementsByClassName('message-top')[0].innerHTML += ' | ';
 				msgs[i].getElementsByClassName('message-top')[0].insertBefore(
-						a, null);
+					a, null);
 			}
 		}
 	},
-	number_posts : function() {
+	number_posts: function() {
 		var page;
 		if (!window.location.href.match(/page=/)) {
 			page = 1;
@@ -503,10 +473,10 @@ var messageList = {
 			postnum.innerHTML = " | #" + id;
 			postnum.id = "message-number";
 			posts[i].getElementsByClassName('message-top')[0].insertBefore(
-					postnum, null);
+				postnum, null);
 		}
 	},
-	post_templates : function() {
+	post_templates: function() {
 		var sep, sepIns, qr;
 		var cDiv = document.createElement('div');
 		cDiv.style.display = 'none';
@@ -531,16 +501,16 @@ var messageList = {
 				qr.innerHTML = "&gt;"
 				qr.className = "expand_post_template";
 				sepIns.addEventListener("click",
-						messageListHelper.postTemplateAction);
+					messageListHelper.postTemplateAction);
 				sepIns.insertBefore(qr, null);
 				sepIns.innerHTML += ']';
 				sep.insertBefore(sepIns, null);
 				document.getElementsByClassName('message-top')[i].insertBefore(
-						sep, null);
+					sep, null);
 			}
 		}
 	},
-	userhl_messagelist : function() {
+	userhl_messagelist: function() {
 		if (!config.enable_user_highlight)
 			return;
 		var messages = document.getElementsByClassName('message-container');
@@ -548,28 +518,25 @@ var messageList = {
 		if (!config.no_user_highlight_quotes) {
 			for (var i = 0; messages[i]; i++) {
 				for (var k = 0; messages[i]
-						.getElementsByClassName('message-top')[k]; k++) {
+					.getElementsByClassName('message-top')[k]; k++) {
 					try {
 						user = messages[i]
-								.getElementsByClassName('message-top')[k]
-								.getElementsByTagName('a')[0].innerHTML
-								.toLowerCase();
+							.getElementsByClassName('message-top')[k]
+							.getElementsByTagName('a')[0].innerHTML
+							.toLowerCase();
 					} catch (e) {
 						break;
 					}
 					if (config.user_highlight_data[user]) {
 						if (config.debug)
 							console.log('highlighting post by ' + user);
-						messages[i].getElementsByClassName('message-top')[k].style.background = '#'
-								+ config.user_highlight_data[user].bg;
-						messages[i].getElementsByClassName('message-top')[k].style.color = '#'
-								+ config.user_highlight_data[user].color;
+						messages[i].getElementsByClassName('message-top')[k].style.background = '#' + config.user_highlight_data[user].bg;
+						messages[i].getElementsByClassName('message-top')[k].style.color = '#' + config.user_highlight_data[user].color;
 						for (var j = 0; messages[i]
-								.getElementsByClassName('message-top')[k]
-								.getElementsByTagName('a')[j]; j++) {
+							.getElementsByClassName('message-top')[k]
+							.getElementsByTagName('a')[j]; j++) {
 							messages[i].getElementsByClassName('message-top')[k]
-									.getElementsByTagName('a')[j].style.color = '#'
-									+ config.user_highlight_data[user].color;
+								.getElementsByTagName('a')[j].style.color = '#' + config.user_highlight_data[user].color;
 						}
 					}
 				}
@@ -577,41 +544,38 @@ var messageList = {
 		} else {
 			for (var i = 0; messages[i]; i++) {
 				user = messages[i].getElementsByClassName('message-top')[0]
-						.getElementsByTagName('a')[0].innerHTML.toLowerCase();
+					.getElementsByTagName('a')[0].innerHTML.toLowerCase();
 				if (config.user_highlight_data[user]) {
 					if (config.debug)
 						console.log('highlighting post by ' + user);
-					messages[i].getElementsByClassName('message-top')[0].style.background = '#'
-							+ config.user_highlight_data[user].bg;
-					messages[i].getElementsByClassName('message-top')[0].style.color = '#'
-							+ config.user_highlight_data[user].color;
+					messages[i].getElementsByClassName('message-top')[0].style.background = '#' + config.user_highlight_data[user].bg;
+					messages[i].getElementsByClassName('message-top')[0].style.color = '#' + config.user_highlight_data[user].color;
 					for (var j = 0; messages[i]
-							.getElementsByClassName('message-top')[0]
-							.getElementsByTagName('a')[j]; j++) {
+						.getElementsByClassName('message-top')[0]
+						.getElementsByTagName('a')[j]; j++) {
 						messages[i].getElementsByClassName('message-top')[0]
-								.getElementsByTagName('a')[j].style.color = '#'
-								+ config.user_highlight_data[user].color;
+							.getElementsByTagName('a')[j].style.color = '#' + config.user_highlight_data[user].color;
 					}
 				}
 			}
 		}
 	},
-	foxlinks_quotes : function() {
+	foxlinks_quotes: function() {
 		commonFunctions.foxlinks_quote();
 	},
-	load_next_page : function() {
+	load_next_page: function() {
 		document.getElementById('u0_3').addEventListener('dblclick',
-				messageListHelper.loadNextPage);
+			messageListHelper.loadNextPage);
 	},
-	pm_title : function() {
+	pm_title: function() {
 		var me = document.getElementsByClassName('userbar')[0]
-				.getElementsByTagName('a')[0].innerHTML.match(/(.*) \(\d+\)/)[1];
+			.getElementsByTagName('a')[0].innerHTML.match(/(.*) \(\d+\)/)[1];
 		var other = '';
 		for (var i = 0; document.getElementsByClassName('message-top')[i]; i++) {
 			if (document.getElementsByClassName('message-top')[i]
-					.getElementsByTagName('a')[0].innerHTML !== me) {
+				.getElementsByTagName('a')[0].innerHTML !== me) {
 				other = document.getElementsByClassName('message-top')[i]
-						.getElementsByTagName('a')[0].innerHTML;
+					.getElementsByTagName('a')[0].innerHTML;
 				break;
 			}
 		}
@@ -619,19 +583,18 @@ var messageList = {
 	}
 }
 var messageListHelper = {
-	ignores : {},
-	startBatchUpload : function(evt) {
+	ignores: {},
+	startBatchUpload: function(evt) {
 		var chosen = document.getElementById('batch_uploads');
 		if (chosen.files.length == 0) {
 			alert('Select files and then click "Batch Upload"');
 			return;
 		}
 		document.getElementsByClassName('quickpost-body')[0]
-				.getElementsByTagName('b')[0].innerHTML += " (Uploading: 1/"
-				+ chosen.files.length + ")";
+			.getElementsByTagName('b')[0].innerHTML += " (Uploading: 1/" + chosen.files.length + ")";
 		commonFunctions.asyncUpload(chosen.files, 0);
 	},
-	postTemplateAction : function(evt) {
+	postTemplateAction: function(evt) {
 		if (evt.target.className === "expand_post_template") {
 			var ins = evt.target.parentNode;
 			ins.removeChild(evt.target);
@@ -641,7 +604,7 @@ var messageListHelper = {
 			ia.href = '##';
 			ins.innerHTML = '[';
 			ins.insertBefore(ia, null);
-			for ( var i in config.post_template_data) {
+			for (var i in config.post_template_data) {
 				var title = document.createElement('a');
 				title.href = '##' + i;
 				title.className = 'post_template_title';
@@ -676,7 +639,7 @@ var messageListHelper = {
 			cdiv.dispatchEvent(messageListHelper.postEvent);
 		}
 	},
-	getTcMessages : function() {
+	getTcMessages: function() {
 		if (!config.tcs)
 			config.tcs = {};
 		var tcs = Array();
@@ -685,12 +648,11 @@ var messageListHelper = {
 		var tc;
 		var haTopic;
 		if (document.getElementsByClassName('message-top')[0].innerHTML
-				.indexOf("> Human") !== -1) {
+			.indexOf("> Human") !== -1) {
 			haTopic = true;
 			tc = "human #1";
 		} else if ((!window.location.href.match('page') || window.location.href
-				.match('page=1($|&)'))
-				&& !window.location.href.match(/u=(\d+)/))
+			.match('page=1($|&)')) && !window.location.href.match(/u=(\d+)/))
 			tc = heads[0].getElementsByTagName('a')[0].innerHTML.toLowerCase();
 		else {
 			if (!config.tcs[topic]) {
@@ -707,7 +669,7 @@ var messageListHelper = {
 		for (var i = 0; i < heads.length; i++) {
 			if (haTopic && heads[i].innerHTML.indexOf("\">Human") == -1) {
 				heads[i].innerHTML = heads[i].innerHTML.replace(/Human #(\d+)/,
-						"<a href=\"#" + i + "\">Human #$1</a>");
+					"<a href=\"#" + i + "\">Human #$1</a>");
 			}
 			if (heads[i].getElementsByTagName('a')[0].innerHTML.toLowerCase() == tc) {
 				tcs.push(heads[i]);
@@ -716,7 +678,7 @@ var messageListHelper = {
 		messageListHelper.saveTcs();
 		return tcs;
 	},
-	toggleSpoilers : function(el) {
+	toggleSpoilers: function(el) {
 		if (el.srcElement.id != 'chromell_spoiler') {
 			return;
 		}
@@ -727,16 +689,16 @@ var messageListHelper = {
 			messageListHelper.toggleSpoiler(nnode);
 		}
 	},
-	toggleSpoiler : function(obj) {
+	toggleSpoiler: function(obj) {
 		while (!/spoiler_(?:open|close)/.test(obj.className)) {
 			obj = obj.parentNode;
 		}
 		obj.className = obj.className.indexOf('closed') != -1 ? obj.className
-				.replace('closed', 'opened') : obj.className.replace('opened',
+			.replace('closed', 'opened') : obj.className.replace('opened',
 				'closed');
 		return false;
 	},
-	expandThumbnail : function(evt) {
+	expandThumbnail: function(evt) {
 		if (config.debug)
 			console.log("in expandThumbnail");
 		var num_children = evt.target.parentNode.parentNode.childNodes.length;
@@ -748,13 +710,12 @@ var messageListHelper = {
 			// build new span
 			var newspan = document.createElement('span');
 			newspan.setAttribute("class", "img-loaded");
-			newspan.setAttribute("id", evt.target.parentNode.getAttribute('id')
-					+ "_expanded");
+			newspan.setAttribute("id", evt.target.parentNode.getAttribute('id') + "_expanded");
 			// build new img child for our newspan
 			var newimg = document.createElement('img');
 			// find fullsize image url
 			var fullsize = evt.target.parentNode.parentNode
-					.getAttribute('imgsrc');
+				.getAttribute('imgsrc');
 			// set proper protocol
 			if (window.location.protocol == "https:") {
 				fullsize = fullsize.replace(/^http:/i, "https:");
@@ -762,7 +723,7 @@ var messageListHelper = {
 			newimg.src = fullsize;
 			newspan.insertBefore(newimg);
 			evt.target.parentNode.parentNode.insertBefore(newspan,
-					evt.target.parentNode);
+				evt.target.parentNode);
 			evt.target.parentNode.style.display = "none"; // hide old img
 		}
 		// has been expanded before - just switch which node is hidden
@@ -781,15 +742,15 @@ var messageListHelper = {
 			}
 		} else if (config.debug)
 			console
-					.log("I don't know what's going on with this image - weird number of siblings");
+			.log("I don't know what's going on with this image - weird number of siblings");
 	},
-	dragEvent : false,
-	dragEventUpdater : function(evt) {
+	dragEvent: false,
+	dragEventUpdater: function(evt) {
 		if (messageListHelper.dragEvent) {
 			console.log(evt);
 		}
 	},
-	addNotebox : function(tops) {
+	addNotebox: function(tops) {
 		if (!tops[0].getElementsByTagName('a')[0].href.match(/user=(\d+)$/i)) {
 			if (config.debug)
 				console.log('HA Topic - skipping usernotes');
@@ -801,19 +762,18 @@ var messageListHelper = {
 			notebook.id = 'notebook';
 			top.innerHTML += " | ";
 			var tempID = top.getElementsByTagName('a')[0].href
-					.match(/user=(\d+)$/i)[1];
-			notebook.innerHTML = (config.usernote_notes[tempID] != undefined && config.usernote_notes[tempID] != '') ? 'Notes*'
-					: 'Notes';
+				.match(/user=(\d+)$/i)[1];
+			notebook.innerHTML = (config.usernote_notes[tempID] != undefined && config.usernote_notes[tempID] != '') ? 'Notes*' : 'Notes';
 			notebook.href = "##note" + tempID;
 			top.appendChild(notebook);
 		}
 	},
-	openNote : function(el) {
+	openNote: function(el) {
 		var userID = el.href.match(/note(\d+)$/i)[1];
 		if (document.getElementById("notepage")) {
 			var pg = document.getElementById('notepage');
 			userID = pg.parentNode.getElementsByTagName('a')[0].href
-					.match(/user=(\d+)$/i)[1];
+				.match(/user=(\d+)$/i)[1];
 			config.usernote_notes[userID] = pg.value;
 			pg.parentNode.removeChild(pg);
 			messageListHelper.saveNotes();
@@ -827,16 +787,16 @@ var messageListHelper = {
 			el.parentNode.appendChild(page);
 		}
 	},
-	saveNotes : function() {
+	saveNotes: function() {
 		chrome.extension.sendRequest({
-			need : "save",
-			name : "usernote_notes",
-			data : config.usernote_notes
+			need: "save",
+			name: "usernote_notes",
+			data: config.usernote_notes
 		}, function(rsp) {
 			console.log(rsp);
 		});
 	},
-	resizeImg : function(el) {
+	resizeImg: function(el) {
 		// console.log(el.width, config.img_max_width);
 		var width = el.width;
 		if (width > config.img_max_width) {
@@ -848,12 +808,12 @@ var messageListHelper = {
 			el.parentNode.style.width = config.img_max_width + 'px';
 		}
 	},
-	saveTcs : function() {
+	saveTcs: function() {
 		var max = 40;
 		var lowest = Infinity;
 		var lowestTc;
 		var numTcs = 0;
-		for ( var i in config.tcs) {
+		for (var i in config.tcs) {
 			if (config.tcs[i].date < lowest) {
 				lowestTc = i;
 				lowest = config.tcs[i].date;
@@ -863,12 +823,12 @@ var messageListHelper = {
 		if (numTcs > max)
 			delete config.tcs[lowestTc];
 		chrome.extension.sendRequest({
-			need : "save",
-			name : "tcs",
-			data : config.tcs
+			need: "save",
+			name: "tcs",
+			data: config.tcs
 		});
 	},
-	clearUnreadPosts : function(evt) {
+	clearUnreadPosts: function(evt) {
 		if (messageListHelper.hasJustScrolled) {
 			messageListHelper.hasJustScrolled = false;
 			return;
@@ -883,10 +843,10 @@ var messageListHelper = {
 			// }, 500);
 		}
 	},
-	init : function() {
+	init: function() {
 		chrome.extension.sendRequest({
-			need : "config",
-			tcs : true
+			need: "config",
+			tcs: true
 		}, function(conf) {
 			messageListHelper.globalPort = chrome.extension.connect();
 			config = conf.data;
@@ -894,7 +854,7 @@ var messageListHelper = {
 			var pm = '';
 			if (window.location.href.match('inboxthread'))
 				pm = "_pm";
-			for ( var i in messageList) {
+			for (var i in messageList) {
 				if (config[i + pm]) {
 					try {
 						messageList[i]();
@@ -905,37 +865,62 @@ var messageListHelper = {
 			}
 			messageListHelper.globalPort.onMessage.addListener(function(msg) {
 				switch (msg.action) {
-				case "ignorator_update":
-					messageListHelper.globalPort.postMessage({
-						action : 'ignorator_update',
-						ignorator : ignorated,
-						scope : "messageList"
-					});
-					break;
-				case "focus_gained":
-					// chrome bug, disabled for now
-					// messageListHelper.clearUnreadPosts();
-					break;
-				case "showIgnorated":
-					if (config.debug)
-						console.log("showing hidden msg", msg.ids);
-					var tr = document.getElementsByClassName('message-top');
-					for (var i = 0; i < msg.ids.length; i++) {
+					case "ignorator_update":
+						messageListHelper.globalPort.postMessage({
+							action: 'ignorator_update',
+							ignorator: ignorated,
+							scope: "messageList"
+						});
+						break;
+					case "focus_gained":
+						// chrome bug, disabled for now
+						// messageListHelper.clearUnreadPosts();
+						break;
+					case "showIgnorated":
 						if (config.debug)
-							console.log(tr[msg.ids[i]]);
-						tr[msg.ids[i]].parentNode.style.display = 'block';
-						tr[msg.ids[i]].parentNode.style.opacity = '.7';
-					}
-					break;
-				default:
-					if (config.debug)
-						console.log('invalid action', msg);
-					break;
+							console.log("showing hidden msg", msg.ids);
+						var tr = document.getElementsByClassName('message-top');
+						for (var i = 0; i < msg.ids.length; i++) {
+							if (config.debug)
+								console.log(tr[msg.ids[i]]);
+							tr[msg.ids[i]].parentNode.style.display = 'block';
+							tr[msg.ids[i]].parentNode.style.opacity = '.7';
+						}
+						break;
+					default:
+						if (config.debug)
+							console.log('invalid action', msg);
+						break;
 				}
 			});
+
+			if (config.new_page_notify) {
+				if (config.debug) {
+					console.log('listening for new page');
+				}
+
+				var target = document.getElementById('nextpage');
+				var observer = new MutationObserver(function(mutations) {
+					mutations.forEach(function(mutation) {
+						if (mutation.type === 'attributes' && target.style.display === 'block') {
+							chrome.extension.sendRequest({
+								need: "notify",
+								title: "New Page Created",
+								message: document.title
+							});
+						}
+					});
+				});
+
+				var config = {
+					attributes: true
+				};
+
+				observer.observe(target, config);
+			}
 		});
 	},
-	loadNextPage : function() {
+	loadNextPage: function() {
 		var page = 1;
 		if (window.location.href.match('asyncpg')) {
 			page = parseInt(window.location.href.match('asyncpg=(\d+)')[1]);
@@ -945,7 +930,7 @@ var messageListHelper = {
 		page++;
 		var topic = window.location.href.match('topic=(\d+)')[1];
 	},
-	qpTagButton : function(e) {
+	qpTagButton: function(e) {
 		if (e.target.tagName != 'INPUT') {
 			return 0;
 		}
@@ -975,10 +960,8 @@ var messageListHelper = {
 
 			ta.selectionStart = focusPoint;
 		} else {
-			var focusPoint = ta.selectionStart + (tag.length * 2)
-					+ select.length + 5;
-			ta.value = before + "<" + tag + ">" + select + "</" + tag + ">"
-					+ after;
+			var focusPoint = ta.selectionStart + (tag.length * 2) + select.length + 5;
+			ta.value = before + "<" + tag + ">" + select + "</" + tag + ">" + after;
 			ta.selectionStart = before.length;
 		}
 
@@ -986,14 +969,14 @@ var messageListHelper = {
 		ta.scrollTop = st;
 		ta.focus();
 	},
-	livelinks : function(evt) {
+	livelinks: function(evt) {
 		if (!evt.target.getElementsByClassName)
 			return;
 		var pm = '';
 		if (window.location.href.match('inboxthread'))
 			pm = "_pm";
 		if (evt.target.getElementsByClassName("message-top")[0]) {
-			for ( var i in messageListLivelinks) {
+			for (var i in messageListLivelinks) {
 				if (config[i + pm]) {
 					try {
 						messageListLivelinks[i](evt.target);
@@ -1010,34 +993,33 @@ var messageListHelper = {
 	}
 }
 var messageListLivelinks = {
-	click_expand_thumbnail : function(el) {
-		if (el.getElementsByClassName('imgs')[0]
-				&& el.getElementsByClassName('quoted-message')[0]) {
+	click_expand_thumbnail: function(el) {
+		if (el.getElementsByClassName('imgs')[0] && el.getElementsByClassName('quoted-message')[0]) {
 			var qm = el.getElementsByClassName('quoted-message');
 			for (var i = 0; qm[i]; i++) {
 				for (var j = 0; qm[i].getElementsByClassName('imgs')[j]; j++) {
 					if (qm[i].getElementsByClassName('imgs')[j]
-							.getElementsByTagName('a')[0].className === '') {
+						.getElementsByTagName('a')[0].className === '') {
 						qm[i].getElementsByClassName('imgs')[j]
-								.addEventListener("click",
-										messageListHelper.expandThumbnail);
+							.addEventListener("click",
+								messageListHelper.expandThumbnail);
 						qm[i].getElementsByClassName('imgs')[j]
-								.getElementsByTagName('a')[0].className = qm[i]
-								.getElementsByClassName('imgs')[j]
-								.getElementsByTagName('a')[0].href
-								.match(/imap\/.*\/(.*)$/)[1];
+							.getElementsByTagName('a')[0].className = qm[i]
+							.getElementsByClassName('imgs')[j]
+							.getElementsByTagName('a')[0].href
+							.match(/imap\/.*\/(.*)$/)[1];
 						qm[i].getElementsByClassName('imgs')[j]
-								.getElementsByTagName('a')[0]
-								.removeAttribute('target');
+							.getElementsByTagName('a')[0]
+							.removeAttribute('target');
 						qm[i].getElementsByClassName('imgs')[j]
-								.getElementsByTagName('a')[0]
-								.removeAttribute('href');
+							.getElementsByTagName('a')[0]
+							.removeAttribute('href');
 					}
 				}
 			}
 		}
 	},
-	ignorator_messagelist : function(el) {
+	ignorator_messagelist: function(el) {
 		if (!config.ignorator)
 			return;
 		var m = el.getElementsByClassName('message-top');
@@ -1046,8 +1028,7 @@ var messageListLivelinks = {
 				if (m[i].getElementsByTagName('a')[0].innerHTML.toLowerCase() == messageListHelper.ignores[f]) {
 					el.style.display = "none";
 					if (config.debug)
-						console.log('removed livelinks post by '
-								+ messageListHelper.ignores[f]);
+						console.log('removed livelinks post by ' + messageListHelper.ignores[f]);
 					ignorated.total_ignored++;
 					if (!ignorated.data.users[messageListHelper.ignores[f]]) {
 						ignorated.data.users[messageListHelper.ignores[f]] = 1;
@@ -1055,81 +1036,79 @@ var messageListLivelinks = {
 						ignorated.data.users[messageListHelper.ignores[f]]++;
 					}
 					messageListHelper.globalPort.postMessage({
-						action : 'ignorator_update',
-						ignorator : ignorated
+						action: 'ignorator_update',
+						ignorator: ignorated
 					});
 				}
 			}
 		}
 	},
-	resize_imgs : function(el) {
+	resize_imgs: function(el) {
 		for (var i = 0; el.getElementsByTagName('img')[i]; i++) {
 			messageListHelper.resizeImg(el.getElementsByTagName('img')[i]);
 		}
 	},
-	user_notes : function(el) {
+	user_notes: function(el) {
 		messageListHelper.addNotebox(el.getElementsByClassName('message-top'));
 	},
-	autoscroll_livelinkss : function(el) {
+	autoscroll_livelinkss: function(el) {
 		var page = 1;
 		if (window.location.href.match('page='))
 			page = window.location.href.match(/page=(\d+)/)[1];
 		var pages = document.getElementById('u0_2')
-				.getElementsByTagName('span')[0].innerHTML;
+			.getElementsByTagName('span')[0].innerHTML;
 		if (page != pages) {
 			window.location.href.match('page=') ? document.location = document.location
-					.replace('page=' + page, 'page=' + pages)
-					: document.location = document.location + '&page=' + pages;
+				.replace('page=' + page, 'page=' + pages) : document.location = document.location + '&page=' + pages;
 		}
 		messageListHelper.hasJustScrolled = true;
 		window.scrollTo(0, (document.body.scrollHeight - 1000));
 	},
-	post_title_notification : function(el) {
+	post_title_notification: function(el) {
 		if (el.style.display === "none") {
 			if (config.debug)
 				console.log('not updating for ignorated post');
 			return;
 		}
 		if (el.getElementsByClassName('message-top')[0]
-				.getElementsByTagName('a')[0].innerHTML == document
-				.getElementsByClassName('userbar')[0].getElementsByTagName('a')[0].innerHTML
-				.replace(/ \((\d+)\)$/, ""))
+			.getElementsByTagName('a')[0].innerHTML == document
+			.getElementsByClassName('userbar')[0].getElementsByTagName('a')[0].innerHTML
+			.replace(/ \((\d+)\)$/, ""))
 			return;
 		var posts = 1;
 		var ud = '';
-		if (document.getElementsByClassName('message-container')[49]) {
+		/*if (document.getElementById('nextpage')) {
 			ud = ud + "+";
 			if (config.new_page_notify) {
 				chrome.extension.sendRequest({
-					need : "notify",
-					title : "New Page Created",
-					message : document.title
+					need: "notify",
+					title: "New Page Created",
+					message: document.title
 				});
 			}
-		}
+		}*/
 		if (document.title.match(/\(\d+\)/)) {
 			posts = parseInt(document.title.match(/\((\d+)\)/)[1]);
-			document.title = "(" + (posts + 1) + ud + ") "
-					+ document.title.replace(/\(\d+\) /, "");
+			document.title = "(" + (posts + 1) + ud + ") " + document.title.replace(/\(\d+\) /, "");
 		} else {
 			document.title = "(" + posts + ud + ") " + document.title;
 		}
 	},
-	notify_quote_post : function(el) {
+	notify_quote_post: function(el) {
 		if (!el.getElementsByClassName('quoted-message'))
 			return;
 		if (el.getElementsByClassName('message-top')[0]
-				.getElementsByTagName('a')[0].innerHTML == document
-				.getElementsByClassName('userbar')[0].getElementsByTagName('a')[0].innerHTML
-				.replace(/ \((\d+)\)$/, ""))
+			.getElementsByTagName('a')[0].innerHTML == document
+			.getElementsByClassName('userbar')[0].getElementsByTagName('a')[0].innerHTML
+			.replace(/ \((\d+)\)$/, ""))
 			return;
 		var not = false;
 		var msg = el.getElementsByClassName('quoted-message');
 		for (var i = 0; msg[i]; i++) {
 			if (msg[i].getElementsByClassName('message-top')[0]
-					.getElementsByTagName('a')[0].innerHTML == document
-					.getElementsByClassName('userbar')[0]
-					.getElementsByTagName('a')[0].innerHTML.replace(
+				.getElementsByTagName('a')[0].innerHTML == document
+				.getElementsByClassName('userbar')[0]
+				.getElementsByTagName('a')[0].innerHTML.replace(
 					/ \((.*)\)$/, "")) {
 				if (msg[i].parentNode.className != 'quoted-message')
 					not = true;
@@ -1137,49 +1116,46 @@ var messageListLivelinks = {
 		}
 		if (not) {
 			chrome.extension.sendRequest({
-				need : "notify",
-				title : "Quoted by "
-						+ el.getElementsByClassName('message-top')[0]
-								.getElementsByTagName('a')[0].innerHTML,
-				message : document.title.replace(/End of the Internet - /i, '')
+				need: "notify",
+				title: "Quoted by " + el.getElementsByClassName('message-top')[0]
+					.getElementsByTagName('a')[0].innerHTML,
+				message: document.title.replace(/End of the Internet - /i, '')
 			}, function(data) {
 				console.log(data);
 			});
 		}
 	},
-	highlight_tc : function(el) {
+	highlight_tc: function(el) {
 		var topic = window.location.href.match(/topic=(\d+)/)[1];
 		if (el.getElementsByClassName('message-top')[0]
-				.getElementsByTagName('a')[0].innerHTML.toLowerCase() == config.tcs[topic].tc) {
+			.getElementsByTagName('a')[0].innerHTML.toLowerCase() == config.tcs[topic].tc) {
 			el.getElementsByClassName('message-top')[0]
-					.getElementsByTagName('a')[0].style.color = '#'
-					+ config.tc_highlight_color;
+				.getElementsByTagName('a')[0].style.color = '#' + config.tc_highlight_color;
 		}
 	},
-	label_tc : function(el) {
+	label_tc: function(el) {
 		var topic = window.location.href.match(/topic=(\d+)/)[1];
 		if (el.getElementsByClassName('message-top')[0]
-				.getElementsByTagName('a')[0].innerHTML.toLowerCase() == config.tcs[topic].tc) {
+			.getElementsByTagName('a')[0].innerHTML.toLowerCase() == config.tcs[topic].tc) {
 			ipx = document.createElement('span');
 			inner = ' | <b>TC</b>';
 			if (config.tc_label_color && config.tc_label_color != '')
-				inner = ' | <font color="#' + config.tc_label_color
-						+ '"><b>TC</b></font>';
+				inner = ' | <font color="#' + config.tc_label_color + '"><b>TC</b></font>';
 			ipx.innerHTML = inner;
 			el.getElementsByClassName('message-top')[0].insertBefore(ipx, el
-					.getElementsByClassName('message-top')[0]
-					.getElementsByTagName('a')[0].nextSibling);
+				.getElementsByClassName('message-top')[0]
+				.getElementsByTagName('a')[0].nextSibling);
 		}
 	},
-	like_button : function(el) {
+	like_button: function(el) {
 		if (el.getElementsByClassName('message-top')[0]
-				.getElementsByTagName('a')[2]) {
+			.getElementsByTagName('a')[2]) {
 			el.getElementsByClassName('message-top')[0].innerHTML += ' | <a href="##like" onclick="like(this);">Like</a>';
 		}
 	},
-	number_posts : function(el) {
+	number_posts: function(el) {
 		var lastPost = document.getElementsByClassName('PostNumber')[document
-				.getElementsByClassName('PostNumber').length - 1];
+			.getElementsByClassName('PostNumber').length - 1];
 		var number = lastPost.innerHTML.match(/#(\d+)/)[1];
 		var post = document.createElement('span');
 		var id = (parseInt(number, 10) + 1);
@@ -1192,87 +1168,75 @@ var messageListLivelinks = {
 		post.className = "PostNumber";
 		post.innerHTML = " | #" + id;
 		el.getElementsByClassName('message-container')[0]
-				.getElementsByClassName('message-top')[0].insertBefore(post,
+			.getElementsByClassName('message-top')[0].insertBefore(post,
 				null);
 	},
-	userhl_messagelist : function(el) {
+	userhl_messagelist: function(el) {
 		if (!config.enable_user_highlight)
 			return;
 		if (!config.no_user_highlight_quotes) {
 			for (var k = 0; el.getElementsByClassName('message-top')[k]; k++) {
 				try {
 					user = el.getElementsByClassName('message-top')[k]
-							.getElementsByTagName('a')[0].innerHTML
-							.toLowerCase();
+						.getElementsByTagName('a')[0].innerHTML
+						.toLowerCase();
 				} catch (e) {
 					break;
 				}
 				if (config.user_highlight_data[user]) {
 					if (config.debug)
 						console.log('highlighting post by ' + user);
-					el.getElementsByClassName('message-top')[k].style.background = '#'
-							+ config.user_highlight_data[user].bg;
-					el.getElementsByClassName('message-top')[k].style.color = '#'
-							+ config.user_highlight_data[user].color;
+					el.getElementsByClassName('message-top')[k].style.background = '#' + config.user_highlight_data[user].bg;
+					el.getElementsByClassName('message-top')[k].style.color = '#' + config.user_highlight_data[user].color;
 					for (var j = 0; el.getElementsByClassName('message-top')[k]
-							.getElementsByTagName('a')[j]; j++) {
+						.getElementsByTagName('a')[j]; j++) {
 						el.getElementsByClassName('message-top')[k]
-								.getElementsByTagName('a')[j].style.color = '#'
-								+ config.user_highlight_data[user].color;
+							.getElementsByTagName('a')[j].style.color = '#' + config.user_highlight_data[user].color;
 					}
-					if (k == 0
-							&& config.notify_userhl_post
-							&& el.getElementsByClassName('message-top')[0]
-									.getElementsByTagName('a')[0].innerHTML != document
-									.getElementsByClassName('userbar')[0]
-									.getElementsByTagName('a')[0].innerHTML
-									.replace(/ \((\d+)\)$/, "")) {
+					if (k == 0 && config.notify_userhl_post && el.getElementsByClassName('message-top')[0]
+						.getElementsByTagName('a')[0].innerHTML != document
+						.getElementsByClassName('userbar')[0]
+						.getElementsByTagName('a')[0].innerHTML
+						.replace(/ \((\d+)\)$/, "")) {
 						chrome.extension
-								.sendRequest(
-										{
-											need : "notify",
-											message : document.title.replace(
-													/End of the Internet - /i,
-													''),
-											title : "Post by "
-													+ el
-															.getElementsByClassName('message-top')[0]
-															.getElementsByTagName('a')[0].innerHTML
-										}, function(data) {
-											console.log(data);
-										});
+							.sendRequest({
+								need: "notify",
+								message: document.title.replace(
+									/End of the Internet - /i,
+									''),
+								title: "Post by " + el
+									.getElementsByClassName('message-top')[0]
+									.getElementsByTagName('a')[0].innerHTML
+							}, function(data) {
+								console.log(data);
+							});
 					}
 				}
 			}
 		} else {
 			user = el.getElementsByClassName('message-top')[0]
-					.getElementsByTagName('a')[0].innerHTML.toLowerCase();
+				.getElementsByTagName('a')[0].innerHTML.toLowerCase();
 			if (config.user_highlight_data[user]) {
 				if (config.debug)
 					console.log('highlighting post by ' + user);
-				el.getElementsByClassName('message-top')[0].style.background = '#'
-						+ config.user_highlight_data[user].bg;
-				el.getElementsByClassName('message-top')[0].style.color = '#'
-						+ config.user_highlight_data[user].color;
+				el.getElementsByClassName('message-top')[0].style.background = '#' + config.user_highlight_data[user].bg;
+				el.getElementsByClassName('message-top')[0].style.color = '#' + config.user_highlight_data[user].color;
 				for (var j = 0; el.getElementsByClassName('message-top')[0]
-						.getElementsByTagName('a')[j]; j++) {
+					.getElementsByTagName('a')[j]; j++) {
 					el.getElementsByClassName('message-top')[0]
-							.getElementsByTagName('a')[j].style.color = '#'
-							+ config.user_highlight_data[user].color;
+						.getElementsByTagName('a')[j].style.color = '#' + config.user_highlight_data[user].color;
 				}
-				if (config.notify_userhl_post
-						&& el.getElementsByClassName('message-top')[0]
-								.getElementsByTagName('a')[0].innerHTML != document
-								.getElementsByClassName('userbar')[0]
-								.getElementsByTagName('a')[0].innerHTML
-								.replace(/ \((\d+)\)$/, "")) {
+				if (config.notify_userhl_post && el.getElementsByClassName('message-top')[0]
+					.getElementsByTagName('a')[0].innerHTML != document
+					.getElementsByClassName('userbar')[0]
+					.getElementsByTagName('a')[0].innerHTML
+					.replace(/ \((\d+)\)$/, "")) {
 					chrome.extension.sendRequest({
-						need : "notify",
-						message : document.title.replace(
-								/End of the Internet - /i, ''),
-						title : "Post by "
-								+ el.getElementsByClassName('message-top')[0]
-										.getElementsByTagName('a')[0].innerHTML
+						need: "notify",
+						message: document.title.replace(
+							/End of the Internet - /i, ''),
+						title: "Post by " + el.getElementsByClassName('message-top')[0]
+							.getElementsByTagName('a')[0].innerHTML
 					}, function(data) {
 						console.log(data);
 					});
@@ -1280,7 +1244,7 @@ var messageListLivelinks = {
 			}
 		}
 	},
-	foxlinks_quotes : function(el) {
+	foxlinks_quotes: function(el) {
 		messageList.foxlinks_quotes();
 	}
 }
